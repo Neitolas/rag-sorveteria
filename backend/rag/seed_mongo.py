@@ -1,9 +1,4 @@
-from mongo import colecao_produtos
-from embeddings import gerar_embedding
-
-colecao_produtos.delete_many({})
-
-produtos = [
+PRODUTOS = [
     {
         "nome": "Sorvete de Chocolate",
         "descricao": "Sorvete cremoso de chocolate belga com pedaços de brownie"
@@ -34,16 +29,23 @@ produtos = [
     }
 ]
 
-docs = []
+def popular_catalogo(colecao, gerar_embedding):
+    for produto in PRODUTOS:
+        documento = {**produto, "embedding": gerar_embedding(produto["descricao"])}
+        colecao.update_one(
+            {"nome": produto["nome"]},
+            {"$setOnInsert": documento},
+            upsert=True,
+        )
 
-for p in produtos:
-    embedding = gerar_embedding(p["descricao"])
-    docs.append({
-        "nome": p["nome"],
-        "descricao": p["descricao"],
-        "embedding": embedding
-    })
 
-colecao_produtos.insert_many(docs)
+if __name__ == "__main__":
+    from pathlib import Path
+    from dotenv import load_dotenv
 
-print("Produtos salvos no Mongo com embeddings")
+    load_dotenv(Path(__file__).resolve().parents[1] / ".env")
+    from rag.mongo import colecao_produtos
+    from rag.embeddings import gerar_embedding
+
+    popular_catalogo(colecao_produtos, gerar_embedding)
+    print("Catálogo de exemplo conferido no MongoDB.")

@@ -1,8 +1,9 @@
-from rag.chat import responder
+if __name__ == "__main__":
+    from rag.chat import responder
 
-pergunta = input("Pergunta: ")
+    pergunta = input("Pergunta: ")
 
-resposta = responder(pergunta)
+    resposta = responder(pergunta)
 
-print("\nResposta:\n")
-print(resposta)
+    print("\nResposta:\n")
+    print(resposta)

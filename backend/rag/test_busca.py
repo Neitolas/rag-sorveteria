@@ -1,9 +1,10 @@
-from rag.busca import buscar_produtos_semantico
+if __name__ == "__main__":
+    from rag.busca import buscar_produtos_semantico
 
-resultado = buscar_produtos_semantico(
-    "Quero um sorvete bem cremoso de chocolate",
-    top_k=2
-)
+    resultado = buscar_produtos_semantico(
+        "Quero um sorvete bem cremoso de chocolate",
+        top_k=2
+    )
 
-for r in resultado:
-    print(r)
+    for r in resultado:
+        print(r)
